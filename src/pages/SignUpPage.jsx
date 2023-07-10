@@ -26,7 +26,7 @@ export default function SignUpPage() {
       Apiperfil.cadastro(body)
         .then((res)=>Navigate('/'))
         .catch((err)=>{
-          setActivede(false)
+          setActivede(true)
           console.log(err)
           alert(err.response.data);
           })

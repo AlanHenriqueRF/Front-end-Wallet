@@ -1,12 +1,16 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
+import { useContext } from "react"
+import { LoginContext } from "../providers/loginContext"
 
 export default function HomePage() {
+  const {user} = useContext(LoginContext)
+
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, Fulano</h1>
+        <h1>Olá, {user.nome}</h1>
         <BiExit />
       </Header>
 
