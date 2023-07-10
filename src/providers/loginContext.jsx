@@ -9,9 +9,7 @@ export const LoginProvider = (props) => {
     const Navigate = useNavigate()
 
     useEffect(()=>{
-        if (!lsUser){
-            Navigate('/')
-        } else{
+        if (lsUser){
             Navigate('/home')
         }
     },[])
