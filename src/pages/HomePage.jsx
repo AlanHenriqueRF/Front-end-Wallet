@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, {user.nome}</h1>
+        <h1 data-test="user-name">Olá, {user.nome}</h1>
         <BiExit />
       </Header>
 

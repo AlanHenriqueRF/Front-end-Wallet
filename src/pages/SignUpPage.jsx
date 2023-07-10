@@ -38,11 +38,11 @@ export default function SignUpPage() {
     <SingUpContainer>
       <form onSubmit={(e)=>subimit(e)}>
         <MyWalletLogo />
-        <input placeholder="Nome" type="text"  value={nome} onChange={(e)=>{setNome(e.target.value)}} required />
-        <input placeholder="E-mail" type="email" value={email} onChange={(e)=>{setEmail(e.target.value)}} required />
-        <input placeholder="Senha" type="password" value={senha} onChange={(e)=>{setSenha(e.target.value)}} autoComplete="new-password" required/>
-        <input placeholder="Confirme a senha" type="password" value={confirm} onChange={(e)=>{setConfirm(e.target.value)}} autoComplete="new-password" required/>
-        <button type="subimit" disabled ={activede} required>Cadastrar</button>
+        <input data-test="name" placeholder="Nome" type="text"  value={nome} onChange={(e)=>{setNome(e.target.value)}} required />
+        <input data-test="email" placeholder="E-mail" type="email" value={email} onChange={(e)=>{setEmail(e.target.value)}} required />
+        <input data-test="password" placeholder="Senha" type="password" value={senha} onChange={(e)=>{setSenha(e.target.value)}} autoComplete="new-password" required/>
+        <input data-test="conf-password" placeholder="Confirme a senha" type="password" value={confirm} onChange={(e)=>{setConfirm(e.target.value)}} autoComplete="new-password" required/>
+        <button data-test="sign-up-submit" type="subimit" disabled ={activede} required>Cadastrar</button>
       </form>
 
       <Link to={'/'}>
