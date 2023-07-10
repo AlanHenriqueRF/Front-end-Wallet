@@ -14,7 +14,6 @@ export const LoginProvider = (props) => {
         } else{
             Navigate('/home')
         }
-
     },[])
 
     return (
