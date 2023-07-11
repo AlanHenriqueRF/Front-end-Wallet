@@ -12,6 +12,7 @@ export default function HomePage() {
   const authorization = 'Bearer ' + user.token
 
   const [transacoes, setTransacoes] = useState([])
+  let [saldo,setSaldo] = useState(0);
 
   const navigate = useNavigate();
 
@@ -25,15 +26,17 @@ export default function HomePage() {
 
   useEffect(() => {
     Apitransacao.gettransacao({ headers: { authorization } })
-      .then((res) => { setTransacoes(res.data) })
+      .then((res) => { 
+        setSaldo(res.data.saldo);
+        setTransacoes(res.data.transacoes) })
       .catch((err) => { alert(err.response.data) })
   }, [])
-
+  
   return (
     <HomeContainer>
       <Header>
         <h1 data-test="user-name">Olá, {user.nome}</h1>
-        <BiExit />
+        <BiExit data-test="logout"/>
       </Header>
 
       <TransactionsContainer>
@@ -43,33 +46,16 @@ export default function HomePage() {
               <ListItemContainer key={item._id}>
                 <div>
                   <span>{item.date}</span>
-                  <strong>{item.descricao}</strong>
+                  <strong data-test="registry-name">{item.descricao}</strong>
                 </div>
-                <Value color={item.tipo==='entrada'?'positivo':'negativo'}>{item.valor}</Value>
+                <Value color={item.tipo==='entrada'?'positivo':'negativo'} data-test="registry-amount">{String(item.valor.toFixed(2)).replace('.',',')}</Value>
               </ListItemContainer>
             )
           })}
-
-          <ListItemContainer>
-            <div>
-              <span>30/11</span>
-              <strong>Almoço mãe</strong>
-            </div>
-            <Value color={"negativo"}>120,00</Value>
-          </ListItemContainer>
-
-          <ListItemContainer>
-            <div>
-              <span>15/11</span>
-              <strong>Salário</strong>
-            </div>
-            <Value color={"positivo"}>3000,00</Value>
-          </ListItemContainer>
         </ul>
-
         <article>
-          <strong>Saldo</strong>
-          <Value color={"positivo"}>2880,00</Value>
+          <strong >Saldo</strong>
+          <Value color={saldo<0?'negativo':'positivo'} data-test="total-amount">{String(((saldo**(2))**(0.5)).toFixed(2)).replace('.',',')}</Value>
         </article>
       </TransactionsContainer>
 
