@@ -9,10 +9,13 @@ import Apitransacao from "../Services/transacao"
 
 export default function HomePage() {
   const { user } = useContext(LoginContext)
-  const authorization = 'Bearer ' + user.token
+  const token = localStorage.getItem('token')
+  const authorization = 'Bearer ' + token
 
   const [transacoes, setTransacoes] = useState([])
   let [saldo,setSaldo] = useState(0);
+
+  const {setUser} = useContext(LoginContext);
 
   const navigate = useNavigate();
 
@@ -25,18 +28,26 @@ export default function HomePage() {
   }
 
   useEffect(() => {
+    if (!token){
+      navigate('/')
+      return
+    }
+
     Apitransacao.gettransacao({ headers: { authorization } })
       .then((res) => { 
         setSaldo(res.data.saldo);
         setTransacoes(res.data.transacoes.reverse()) })
       .catch((err) => { alert(err.response.data) })
-  }, [])
+  }, [token])
   
   return (
     <HomeContainer>
       <Header>
         <h1 data-test="user-name">Olá, {user.nome}</h1>
-        <BiExit data-test="logout"/>
+        <BiExit onClick={()=>{
+          navigate('/');
+          setUser({});
+          localStorage.clear();}} data-test="logout"/>
       </Header>
 
       <TransactionsContainer>

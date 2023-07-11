@@ -12,13 +12,14 @@ export default function TransactionsPage() {
   const Navigate = useNavigate()
 
   const { user } = useContext(LoginContext)
+  const token = localStorage.getItem('token')
 
   const tipo = useParams();
 
   function produtoSubimit(e) {
     e.preventDefault()
     setActivede(true);
-    const authorization = 'Bearer ' + user.token
+    const authorization = 'Bearer ' + token
 
     Apitransacao.posttransacao({ valor:Number(valor), descricao, tipo: tipo.tipo },{ headers:{ authorization }})
       .then((res) => {

@@ -23,7 +23,7 @@ export default function SignInPage() {
         setUser(res.data)
         setActivede(false)
 
-        localStorage.setItem("user",JSON.stringify(res.data))
+        localStorage.setItem("token",(res.data.token))
 
         Navigate('/home')
       })
@@ -33,6 +33,8 @@ export default function SignInPage() {
         alert(err.response.data)
       })
   }
+
+  
   return (
     <SingInContainer>
       <form onSubmit={(e)=>loginsubimit(e)}>
