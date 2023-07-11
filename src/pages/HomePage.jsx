@@ -1,11 +1,33 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { LoginContext } from "../providers/loginContext"
+import { Link, useNavigate } from "react-router-dom"
+import Apitransacao from "../Services/transacao"
+
 
 export default function HomePage() {
-  const {user} = useContext(LoginContext)
+  const { user } = useContext(LoginContext)
+  const authorization = 'Bearer ' + user.token
+
+  const [transacoes, setTransacoes] = useState([])
+
+  const navigate = useNavigate();
+
+  function entrada() {
+    navigate("/nova-transacao/entrada");
+  }
+
+  function saida() {
+    navigate("/nova-transacao/saida")
+  }
+
+  useEffect(() => {
+    Apitransacao.gettransacao({ headers: { authorization } })
+      .then((res) => { setTransacoes(res.data) })
+      .catch((err) => { alert(err.response.data) })
+  }, [])
 
   return (
     <HomeContainer>
@@ -16,6 +38,18 @@ export default function HomePage() {
 
       <TransactionsContainer>
         <ul>
+          {transacoes.map((item) => {
+            return (
+              <ListItemContainer key={item._id}>
+                <div>
+                  <span>{item.date}</span>
+                  <strong>{item.descricao}</strong>
+                </div>
+                <Value color={item.tipo==='entrada'?'positivo':'negativo'}>{item.valor}</Value>
+              </ListItemContainer>
+            )
+          })}
+
           <ListItemContainer>
             <div>
               <span>30/11</span>
@@ -41,11 +75,13 @@ export default function HomePage() {
 
 
       <ButtonsContainer>
-        <button>
+        <button type="button" data-test="new-income" onClick={entrada}>
+
           <AiOutlinePlusCircle />
           <p>Nova <br /> entrada</p>
+
         </button>
-        <button>
+        <button type="button" data-test="new-expense" onClick={saida}>
           <AiOutlineMinusCircle />
           <p>Nova <br />saída</p>
         </button>

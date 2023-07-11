@@ -1,8 +1,8 @@
 import { useContext, useState } from "react"
 import { useNavigate, useParams, useSubmit } from "react-router-dom"
 import styled from "styled-components"
-import transacao from "../Services/transacao";
 import { LoginContext } from "../providers/loginContext";
+import Apitransacao from "../Services/transacao";
 
 export default function TransactionsPage() {
   const [valor, setValor] = useState('');
@@ -21,15 +21,15 @@ export default function TransactionsPage() {
     const authorization = 'Bearer ' + user.token
 
 
-    transacao({ valor:Number(valor), descricao, tipo: tipo.tipo },{ headers:{ authorization }})
+    Apitransacao.posttransacao({ valor:Number(valor), descricao, tipo: tipo.tipo },{ headers:{ authorization }})
       .then((res) => {
         setActivede(false)
         Navigate('/home')
       })
       .catch((err) => {
         setActivede(false)
-        console.log(err)
-        //alert(err.response.data)
+        //console.log(err)
+        alert(err.response.data)
       })
   }
   return (
@@ -38,7 +38,7 @@ export default function TransactionsPage() {
       <form onSubmit={(e) => produtoSubimit(e)}>
         <input data-test="registry-amount-input" placeholder="Valor" value={valor} onChange={(e) => setValor(e.target.value)} type="text" required />
         <input data-test="registry-name-input" placeholder="Descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} type="text" required />
-        <button data-test="registry-save" type="submit" disabled={activede} required>Salvar TRANSAÇÃO</button>
+        <button data-test="registry-save" type="submit" disabled={activede} required>Salvar {tipo.tipo}</button>
       </form>
     </TransactionsContainer>
   )

@@ -2,9 +2,14 @@ import axios from "axios";
 
 const BASE_URL =`${import.meta.env.VITE_API_URL}`
 
-function transacao(body,config){
+function posttransacao(body,config){
     const promise = axios.post(BASE_URL+'/transacao',body, config)
     return promise
 }
+function gettransacao(config){
+    const promise = axios.get(BASE_URL+'/transacao',config)
+    return promise 
+}
 
-export default transacao
+const Apitransacao = {posttransacao,gettransacao}
+export default Apitransacao
