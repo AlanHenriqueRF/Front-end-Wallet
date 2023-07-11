@@ -29,8 +29,7 @@ export default function SignInPage() {
       })
       .catch((err)=>{
         setActivede(false);
-        console.log(err)
-        console.log(err.response.data)
+
         alert(err.response.data)
       })
   }

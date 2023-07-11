@@ -1,13 +1,44 @@
+import { useContext, useState } from "react"
+import { useNavigate, useParams, useSubmit } from "react-router-dom"
 import styled from "styled-components"
+import transacao from "../Services/transacao";
+import { LoginContext } from "../providers/loginContext";
 
 export default function TransactionsPage() {
+  const [valor, setValor] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [activede, setActivede] = useState(false)
+
+  const Navigate = useNavigate()
+
+  const { user } = useContext(LoginContext)
+
+  const tipo = useParams();
+
+  function produtoSubimit(e) {
+    e.preventDefault()
+    setActivede(true);
+    const authorization = 'Bearer ' + user.token
+
+
+    transacao({ valor:Number(valor), descricao, tipo: tipo.tipo },{ headers:{ authorization }})
+      .then((res) => {
+        setActivede(false)
+        Navigate('/home')
+      })
+      .catch((err) => {
+        setActivede(false)
+        console.log(err)
+        //alert(err.response.data)
+      })
+  }
   return (
     <TransactionsContainer>
       <h1>Nova TRANSAÇÃO</h1>
-      <form>
-        <input placeholder="Valor" type="text"/>
-        <input placeholder="Descrição" type="text" />
-        <button>Salvar TRANSAÇÃO</button>
+      <form onSubmit={(e) => produtoSubimit(e)}>
+        <input placeholder="Valor" value={valor} onChange={(e) => setValor(e.target.value)} type="text" required />
+        <input placeholder="Descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} type="text" required />
+        <button type="submit" disabled={activede} required>Salvar TRANSAÇÃO</button>
       </form>
     </TransactionsContainer>
   )
