@@ -20,7 +20,6 @@ export default function TransactionsPage() {
     setActivede(true);
     const authorization = 'Bearer ' + user.token
 
-
     Apitransacao.posttransacao({ valor:Number(valor), descricao, tipo: tipo.tipo },{ headers:{ authorization }})
       .then((res) => {
         setActivede(false)

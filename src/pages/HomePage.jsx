@@ -28,7 +28,7 @@ export default function HomePage() {
     Apitransacao.gettransacao({ headers: { authorization } })
       .then((res) => { 
         setSaldo(res.data.saldo);
-        setTransacoes(res.data.transacoes) })
+        setTransacoes(res.data.transacoes.reverse()) })
       .catch((err) => { alert(err.response.data) })
   }, [])
   
